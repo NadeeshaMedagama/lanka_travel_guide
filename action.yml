@@ -1,0 +1,23 @@
+name: 'Lanka Travel Guide Setup'
+description: 'A custom GitHub Action to set up the Lanka Travel Guide environment.'
+author: 'SENG 41293 Student'
+branding:
+  icon: 'map'
+  color: 'blue'
+
+inputs:
+  environment:
+    description: 'The environment to deploy to (e.g., staging, production)'
+    required: false
+    default: 'production'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Echo environment
+      run: echo "Setting up the ${{ inputs.environment }} environment for Lanka Travel Guide."
+      shell: bash
+    
+    - name: Verify Node.js
+      run: node --version
+      shell: bash
