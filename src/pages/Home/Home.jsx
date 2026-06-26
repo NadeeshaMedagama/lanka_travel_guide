@@ -28,7 +28,12 @@ function Home() {
       }
     } catch (err) {
       if (isMounted.current) {
-        setError('Could not load attractions. Is the API server running? Open a terminal and run: npm run api');
+        // mode-aware message: the json-server hint only applies when an API URL is configured (local dev)
+        setError(
+          import.meta.env.VITE_API_URL
+            ? 'Could not load attractions. Is the API server running? Open a terminal and run: npm run api'
+            : 'Could not load attractions. Please check your connection and try again.'
+        );
       }
     } finally {
       // setLoading(false) in finally guarantees loading is cleared whether the fetch succeeded or failed. 
