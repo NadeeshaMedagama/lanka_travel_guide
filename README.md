@@ -8,6 +8,9 @@
 ![Router](https://img.shields.io/badge/React_Router-v6-ca4245?style=flat-square&logo=react-router&logoColor=white)
 ![Assignment](https://img.shields.io/badge/SENG_41293-University_of_Kelaniya-1a7a4a?style=flat-square)
 
+## 🚀 Live Demo
+Try the live application here: **https://lanka-travel-guide.vercel.app/**
+
 ## About the Project
 This is a Mobile Web Application (Track B) built for SENG 41293. It helps tourists explore Sri Lanka with 12 real attractions across 3 categories. Key features include an async REST API, HTML5 Geolocation, localStorage persistence, SPA routing, a fully client-side-validated trip-inquiry form, and full Progressive Web App (offline) support.
 
