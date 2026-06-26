@@ -7,7 +7,11 @@
  * WHY ASYNC/AWAIT: Cleaner, more readable, easier to debug than .then()/.catch() — reads like synchronous code while being asynchronous.
  */
 
-const BASE_URL = 'http://localhost:3001'
+// CONFIGURABLE BASE URL: read from a Vite env var (VITE_API_URL) at build time, with a
+// localhost fallback for the default dev/demo setup. This lets the same codebase point at a
+// hosted API without editing source. Vite only exposes env vars prefixed with VITE_ to the
+// client (import.meta.env.VITE_*); anything else stays server-side and is never bundled.
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 export async function fetchAllAttractions() {
   const response = await fetch(`${BASE_URL}/attractions`)
