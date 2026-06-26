@@ -60,7 +60,7 @@ npm install
 ```
 
 ### ⚡ Running the Application
-> **IMPORTANT:** You need **two terminal windows** running simultaneously.
+> **IMPORTANT:** To use the json-server mock REST API locally, copy `.env.example` to `.env`, then run **two terminal windows** simultaneously. (Without a `.env`, the app falls back to the static snapshot and needs only Terminal 2.)
 
 **Terminal 1 — Start the Mock REST API:**
 ```bash
@@ -77,12 +77,22 @@ npm run dev
 
 Open **Chrome** and navigate to: **http://localhost:5173**
 
-### 🔧 Environment Configuration (optional)
-The API base URL defaults to `http://localhost:3001`. To point at a different/hosted API, copy `.env.example` to `.env` and set:
-```bash
-VITE_API_URL=https://your-hosted-api.example.com
-```
-If no `.env` is present, the app falls back to localhost automatically — so the default two-terminal setup needs no configuration.
+### 🔧 Data Source: Local vs Deployed
+Attraction data has two interchangeable sources, both consumed via the async Fetch API:
+
+| Environment | Data source | Setup |
+|-------------|-------------|-------|
+| **Local dev** (`npm run dev`) | json-server mock **REST API** at `http://localhost:3001` | copy `.env.example` → `.env`, then run `npm run api` |
+| **Production / Vercel** | bundled **static snapshot** `public/attractions.json` (auto-regenerated from `db.json` on every build) | none — works with no backend |
+
+Local development reads `VITE_API_URL` from `.env`. Production builds deliberately ignore it and never compile a `localhost` URL into the bundle, so the deployed site is fully self-contained.
+
+> **Why this matters:** `.env` is git-ignored, so it is never pushed to GitHub/Vercel. A hardcoded `localhost` API would therefore fail once deployed — which is exactly why production serves the static snapshot instead.
+
+### ▲ Deploying to Vercel
+1. Push to GitHub and import the repo in Vercel (framework preset: **Vite**, build command `npm run build`, output `dist`).
+2. **No environment variables are required** — the static snapshot is used automatically.
+3. `vercel.json` rewrites all paths to `index.html` so client-side routing (deep links & page refresh) works.
 
 ### 📴 Running as a PWA (offline demo)
 The service worker is enabled in **production builds only**, so it never interferes with Vite's hot-reload during development. To demo install + offline:
