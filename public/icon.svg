@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Lanka Travel Guide">
+  <rect width="512" height="512" rx="96" fill="#1a7a4a"/>
+  <circle cx="256" cy="205" r="112" fill="#ffffff"/>
+  <polygon points="160,261 352,261 256,369" fill="#ffffff"/>
+  <circle cx="256" cy="205" r="47" fill="#1a7a4a"/>
+</svg>
