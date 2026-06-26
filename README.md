@@ -9,7 +9,7 @@
 ![Assignment](https://img.shields.io/badge/SENG_41293-University_of_Kelaniya-1a7a4a?style=flat-square)
 
 ## About the Project
-This is a Mobile Web Application (Track B) built for SENG 41293. It helps tourists explore Sri Lanka with 12 real attractions across 3 categories. Key features include an async REST API, HTML5 Geolocation, localStorage persistence, and SPA routing.
+This is a Mobile Web Application (Track B) built for SENG 41293. It helps tourists explore Sri Lanka with 12 real attractions across 3 categories. Key features include an async REST API, HTML5 Geolocation, localStorage persistence, SPA routing, a fully client-side-validated trip-inquiry form, and full Progressive Web App (offline) support.
 
 ## Features
 - ✅ Mobile-first responsive grid — 1 column (mobile) → 2 columns (tablet) → 3 columns (desktop)
@@ -24,6 +24,10 @@ This is a Mobile Web Application (Track B) built for SENG 41293. It helps touris
 - ✅ Touch-optimized UI — 48×48px minimum touch targets (WCAG 2.1 compliant)
 - ✅ Zero external CSS dependencies — pure CSS3 Custom Properties (design tokens)
 - ✅ Image error fallback handling (broken images show placeholder)
+- ✅ "Plan Your Trip" inquiry form with strict client-side validation (text, email, phone, number, select, date, textarea) and accessible inline error messages
+- ✅ Installable Progressive Web App with a custom service worker for offline access (cache-first assets, network-first API)
+- ✅ Environment-configurable API base URL (`VITE_API_URL`) so the same code runs on localhost or a hosted backend
+- ✅ Unit tests (Vitest + Testing Library) covering the Haversine distance util, form validators, and the favorites hook
 
 ## Tech Stack
 | Technology | Version | Purpose |
@@ -36,6 +40,8 @@ This is a Mobile Web Application (Track B) built for SENG 41293. It helps touris
 | localStorage | native | Data persistence |
 | Geolocation API | native | HTML5 hardware API |
 | CSS3 Custom Properties | native | Responsive styling |
+| Service Worker + Manifest | native | PWA / offline support |
+| Vitest + Testing Library | 2.x / 16.x | Unit & hook testing |
 
 ## Getting Started
 
@@ -71,12 +77,34 @@ npm run dev
 
 Open **Chrome** and navigate to: **http://localhost:5173**
 
+### 🔧 Environment Configuration (optional)
+The API base URL defaults to `http://localhost:3001`. To point at a different/hosted API, copy `.env.example` to `.env` and set:
+```bash
+VITE_API_URL=https://your-hosted-api.example.com
+```
+If no `.env` is present, the app falls back to localhost automatically — so the default two-terminal setup needs no configuration.
+
+### 📴 Running as a PWA (offline demo)
+The service worker is enabled in **production builds only**, so it never interferes with Vite's hot-reload during development. To demo install + offline:
+```bash
+npm run build
+npm run preview        # serves the built PWA, e.g. http://localhost:4173
+```
+Then in Chrome DevTools → **Application** tab: inspect the **Manifest**, confirm the registered **Service Worker**, tick **Offline**, and reload — the app shell and previously loaded attractions still work.
+
+### 🧪 Running Tests
+```bash
+npm test               # run the unit test suite once (Vitest)
+npm run test:watch     # watch mode
+```
+
 ## Available Routes
 | Route | Page | Description |
 |-------|------|-------------|
 | `/` | Home | Attraction grid with hero banner and category filter |
 | `/attraction/:id` | Detail | Full attraction info, Geolocation distance, Maps link, Favorite toggle |
 | `/favorites` | Favorites | All bookmarked attractions (from localStorage) |
+| `/contact` | Plan Your Trip | Validated trip-inquiry form (saved to localStorage) |
 
 ## Testing Mobile Responsiveness
 1. Open Chrome → go to http://localhost:5173
@@ -103,17 +131,26 @@ Open **Chrome** and navigate to: **http://localhost:5173**
 ```text
 Lanka_Travel_Guide/
 ├── README.md
+├── .env.example
 ├── db.json
 ├── index.html
 ├── json-server.json
 ├── package-lock.json
 ├── package.json
 ├── vite.config.js
+├── public/                     # static assets served at the web root (PWA)
+│   ├── icon.svg
+│   ├── manifest.webmanifest
+│   ├── sw.js                   # custom service worker (offline support)
+│   └── icons/
+│       ├── icon-192.png
+│       └── icon-512.png
 └── src/
     ├── App.css
     ├── App.jsx
     ├── index.css
     ├── main.jsx
+    ├── registerSW.js           # registers the service worker (production only)
     ├── components/
     │   ├── AttractionCard/
     │   │   ├── AttractionCard.css
@@ -129,8 +166,12 @@ Lanka_Travel_Guide/
     │       └── Navbar.jsx
     ├── hooks/
     │   ├── useFavorites.js
+    │   ├── useFavorites.test.jsx
     │   └── useGeolocation.js
     ├── pages/
+    │   ├── Contact/
+    │   │   ├── Contact.css
+    │   │   └── Contact.jsx
     │   ├── Detail/
     │   │   ├── Detail.css
     │   │   └── Detail.jsx
@@ -142,8 +183,13 @@ Lanka_Travel_Guide/
     │       └── Home.jsx
     ├── services/
     │   └── api.js
+    ├── test/
+    │   └── setup.js
     └── utils/
-        └── distance.js
+        ├── distance.js
+        ├── distance.test.js
+        ├── validators.js
+        └── validators.test.js
 ```
 
 ## Assignment Details
