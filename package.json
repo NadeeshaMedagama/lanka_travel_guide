@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/gen-static.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "api": "json-server --watch db.json --port 3001",
